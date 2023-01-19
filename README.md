@@ -1,7 +1,19 @@
 # spring-ui-scope-onAttach
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+This project demonstrates an issue with spring look ups of UIScope components during the onAttach() method when using F5 or browser refresh button.
+
+When you run this application there will be a single instance of AboutView, SimpleUIScopeService, and HellowWorldView objects created. 
+You can switch back and forth between the views without a new instance being create. 
+This is the expected behavior because we added UIScope annotation to the components. 
+The issue is when you select the about view and then use the browsers refresh button or press f5 key. 
+You will notice each refresh will generate a new SimpleUIScopeService. (check stdout) 
+
+This is unexpected because the SimpleUIScopeService is also a UIScope component. 
+Also at this point if you then click back to HelloWorldView a new instance of that class will be created.
+
+Note:
+* AboutView has an onAttach method and in that method does a lookup via ApplicationContext.getBean() for SimpleUIScopeService.
+* Each class logs when the constructor is called in stdout.
 
 ## Running the application
 
